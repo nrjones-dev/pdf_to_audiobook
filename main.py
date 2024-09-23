@@ -23,13 +23,13 @@ class PDFReader:
         self.file_path = pdf_file_path
         self.reader = PdfReader(self.file_path)
 
-    def extract_text(self, page_number):
+    def extract_text(self, page_number: int): # add expected return value
         page = self.reader.pages[page_number]
         return page.extract_text()
 
 
 class TextToSpeechClient:
-    def __init__(self, config) -> None:
+    def __init__(self, config) -> None: # add type for config
         self.client = aws.client(
             "polly",
             aws_access_key_id=config.aws_access_key,
@@ -61,7 +61,7 @@ class SaveStream:
         self.save_location = os.path.join(self.dir_path, self.file_name)
         
         
-    def save_audio(self, audio_stream):
+    def save_audio(self, audio_stream): # add input type and expected return type.
         with closing(audio_stream) as stream:
             with open(self.save_location, "wb") as file:
                 file.write(stream.read())
