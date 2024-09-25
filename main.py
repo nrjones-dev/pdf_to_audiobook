@@ -2,6 +2,7 @@ import os
 from contextlib import closing
 
 import boto3 as aws
+from botocore.response import StreamingBody
 from dotenv import load_dotenv
 from pypdf import PdfReader
 
@@ -23,13 +24,13 @@ class PDFReader:
         self.file_path = pdf_file_path
         self.reader = PdfReader(self.file_path)
 
-    def extract_text(self, page_number: int): # add expected return value
+    def extract_text(self, page_number: int) -> str:
         page = self.reader.pages[page_number]
         return page.extract_text()
 
 
 class TextToSpeechClient:
-    def __init__(self, config) -> None: # add type for config
+    def __init__(self, config: Config) -> None:
         self.client = aws.client(
             "polly",
             aws_access_key_id=config.aws_access_key,
@@ -55,24 +56,24 @@ class TextToSpeechClient:
 
 class SaveStream:
     """Saves the audio stream from TTS client to a file."""
-    def __init__(self, dir_path, file_name) -> None:
+
+    def __init__(self, dir_path: str, file_name: str) -> None:
         self.dir_path = dir_path
         self.file_name = file_name
         self.save_location = os.path.join(self.dir_path, self.file_name)
-        
-        
-    def save_audio(self, audio_stream): # add input type and expected return type.
+
+    def save_audio(self, audio_stream: StreamingBody) -> None:
         with closing(audio_stream) as stream:
             with open(self.save_location, "wb") as file:
                 file.write(stream.read())
-                
+
 
 if __name__ == "__main__":
     config = Config()
-    
+
     pdf_reader = PDFReader("pdf_books/Book1.pdf")
     pdf_text = pdf_reader.extract_text(12)
-    
+
     tts_client = TextToSpeechClient(config)
     
     voice_selection = tts_client.describe_voices()
