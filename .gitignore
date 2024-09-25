@@ -1,5 +1,5 @@
 /pdf_books
-#.env
+.env
 .DS_Store
 /tts_output
 tempCodeRunnerFile.py
