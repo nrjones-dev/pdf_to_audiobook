@@ -3,4 +3,5 @@
 .DS_Store
 /tts_output
 tempCodeRunnerFile.py
-/.venv
+venv
+pycache

@@ -46,6 +46,8 @@ class SaveStream:
     """Saves the audio stream from TTS client to a file."""
 
     def __init__(self, dir_path: str, file_name: str) -> None:
+        if not os.path.exists(os.path.abspath(dir_path)):
+            os.mkdir(dir_path)
         self.dir_path = dir_path
         self.file_name = file_name
         self.save_location = os.path.join(self.dir_path, self.file_name)
