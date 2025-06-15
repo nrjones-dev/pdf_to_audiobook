@@ -17,4 +17,4 @@ if __name__ == "__main__":
 
     audio_output = SaveStream("tts_output/", "output_file.mp3")
 
-    audio_output.save_audio(response.get("AudioStream"))
+    audio_output.save_audio(response.get("AudioStream")) # type: ignore
